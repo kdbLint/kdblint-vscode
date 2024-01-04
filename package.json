@@ -20,7 +20,7 @@
     "kdb+"
   ],
   "preview": true,
-  "main": "index.js",
+  "main": "./dist/extension",
   "contributes": {
     "grammars": [
       {
@@ -60,13 +60,31 @@
   "activationEvents": [
     "workspaceContains:**/*.{k,q}"
   ],
-  "dependencies": {},
-  "devDependencies": {},
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1",
+    "vscode-languageserver": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^6.17.0",
+    "@typescript-eslint/parser": "^6.17.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.1.1",
+    "typescript": "^5.3.3"
+  },
   "extensionKind": [
     "workspace"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -b",
+    "watch": "tsc -b -w",
+    "lint": "eslint ./src --ext .ts",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -79,5 +97,8 @@
   "bugs": {
     "url": "https://github.com/kdblint/kdblint-vscode/issues"
   },
-  "homepage": "https://github.com/kdblint/kdblint-vscode#readme"
+  "homepage": "https://github.com/kdblint/kdblint-vscode#readme",
+  "lint-staged": {
+    "**/*": "npx prettier --write --ignore-unknown"
+  }
 }
