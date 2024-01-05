@@ -1,5 +1,5 @@
 import * as path from "path";
-import { ExtensionContext } from "vscode";
+import { ExtensionContext, window } from "vscode";
 
 import {
   LanguageClient,
@@ -10,11 +10,51 @@ import {
 
 let client: LanguageClient;
 
-export function activate(context: ExtensionContext) {
-  const serverModule = context.asAbsolutePath(path.join("dist", "server.js"));
+const platform =
+  process.platform === "win32"
+    ? "windows"
+    : process.platform === "darwin"
+      ? "macos"
+      : process.platform === "linux"
+        ? "linux"
+        : undefined;
+
+const arch =
+  process.arch === "x64"
+    ? "x86_64"
+    : process.arch === "arm64"
+      ? "aarch64"
+      : undefined;
+
+export async function activate(context: ExtensionContext) {
+  if (platform === undefined) {
+    await window.showErrorMessage(
+      `Unsupported operating system platform: ${process.platform}.`,
+    );
+    return;
+  }
+
+  if (arch === undefined) {
+    await window.showErrorMessage(
+      `Unsupported CPU architecture: ${process.arch}.`,
+    );
+    return;
+  }
+
+  const serverCommand = context.asAbsolutePath(
+    path.join(
+      "node_modules",
+      "@kdblint",
+      "kdblint",
+      "dist",
+      platform,
+      arch,
+      "kdblint",
+    ),
+  );
   const serverOptions: ServerOptions = {
-    run: { module: serverModule, transport: TransportKind.ipc },
-    debug: { module: serverModule, transport: TransportKind.ipc },
+    run: { command: serverCommand, transport: TransportKind.stdio },
+    debug: { command: serverCommand, transport: TransportKind.stdio },
   };
 
   const clientOptions: LanguageClientOptions = {
@@ -31,7 +71,7 @@ export function activate(context: ExtensionContext) {
     clientOptions,
   );
 
-  return client.start();
+  await client.start();
 }
 
 export function deactivate() {

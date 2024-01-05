@@ -61,6 +61,7 @@
     "workspaceContains:**/*.{k,q}"
   ],
   "dependencies": {
+    "@kdblint/kdblint": "^0.1.0",
     "vscode-languageclient": "^9.0.1",
     "vscode-languageserver": "^9.0.1"
   },
