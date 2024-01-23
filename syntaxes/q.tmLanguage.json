@@ -4,6 +4,9 @@
   "scopeName": "source.q",
   "patterns": [
     {
+      "include": "source.k"
+    },
+    {
       "include": "#dsl"
     },
     {
@@ -14,9 +17,6 @@
     },
     {
       "include": "#variable"
-    },
-    {
-      "include": "source.k"
     }
   ],
   "repository": {

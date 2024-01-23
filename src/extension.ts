@@ -27,14 +27,14 @@ const arch =
       : undefined;
 
 export async function activate(context: ExtensionContext) {
-  if (platform === undefined) {
+  if (!platform) {
     await window.showErrorMessage(
       `Unsupported operating system platform: ${process.platform}.`,
     );
     return;
   }
 
-  if (arch === undefined) {
+  if (!arch) {
     await window.showErrorMessage(
       `Unsupported CPU architecture: ${process.arch}.`,
     );
@@ -74,10 +74,10 @@ export async function activate(context: ExtensionContext) {
   await client.start();
 }
 
-export function deactivate() {
+export async function deactivate() {
   if (!client) {
     return undefined;
   }
 
-  return client.stop();
+  await client.stop();
 }
