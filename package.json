@@ -55,13 +55,27 @@
         "firstLine": "^#!.*\\bq\\b",
         "configuration": "./language-configuration.json"
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "KdbLint",
+      "properties": {
+        "kdblint.kdbVersion": {
+          "type": "string",
+          "default": "4.0",
+          "enum": [
+            "4.0"
+          ]
+        }
+      }
+    }
   },
   "activationEvents": [
     "workspaceContains:**/*.{k,q}"
   ],
   "dependencies": {
-    "@kdblint/kdblint": "^0.2.0",
+    "@kdblint/kdblint": "^0.3.0",
+    "camelcase": "^8.0.0",
     "vscode-languageclient": "^9.0.1",
     "vscode-languageserver": "^9.0.1"
   },
@@ -70,6 +84,7 @@
     "@types/vscode": "^1.85.0",
     "@typescript-eslint/eslint-plugin": "^6.19.1",
     "@typescript-eslint/parser": "^6.19.1",
+    "esbuild": "^0.21.1",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "husky": "^8.0.3",
@@ -81,9 +96,10 @@
     "workspace"
   ],
   "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -b",
-    "watch": "tsc -b -w",
+    "vscode:prepublish": "npm run build -- --minify",
+    "build": "esbuild --bundle --external:vscode src/extension.ts --outdir=dist --platform=node --format=cjs",
+    "compile": "npm run build -- --sourcemap",
+    "watch": "npm run build -- --sourcemap --watch",
     "lint": "eslint ./src --ext .ts",
     "prepare": "husky install"
   },

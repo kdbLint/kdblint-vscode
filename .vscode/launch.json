@@ -11,6 +11,9 @@
       "preLaunchTask": {
         "type": "npm",
         "script": "watch"
+      },
+      "env": {
+        "VSCODE_DEBUG_MODE": "true"
       }
     }
   ]

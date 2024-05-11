@@ -8,18 +8,16 @@
         "kind": "build",
         "isDefault": true
       },
-      "problemMatcher": ["$tsc"],
-      "label": "npm: compile",
-      "detail": "tsc -b"
+      "problemMatcher": "$esbuild",
+      "label": "npm: compile"
     },
     {
       "type": "npm",
       "script": "watch",
-      "isBackground": true,
       "group": "build",
-      "problemMatcher": ["$tsc-watch"],
-      "label": "npm: watch",
-      "detail": "tsc -b -w"
+      "problemMatcher": "$esbuild-watch",
+      "isBackground": true,
+      "label": "npm: watch"
     }
   ]
 }
